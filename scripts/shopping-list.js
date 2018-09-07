@@ -90,7 +90,6 @@ const shoppingList = (function(){
         })
         .catch(
           (err) => {
-            console.log(err);
             store.setError(err);
             render();
           });
@@ -108,10 +107,17 @@ const shoppingList = (function(){
     $('.js-shopping-list').on('click', '.js-item-toggle', event => {
       const id = getItemIdFromElement(event.currentTarget);
       const item = store.findById(id);
-      api.updateItem(id, { checked: !item.checked }, () => {
-        store.findAndUpdate(id, { checked: !item.checked });
-        render();
-      });
+      api.updateItem(10, { checked: !item.checked })
+        .then(() => {
+          store.findAndUpdate(id, { checked: !item.checked });
+          render();
+        })
+        .catch((err) => {
+          console.log('error hit');
+          console.log(err.responseJSON.message);
+          store.setError(err);
+          render();
+        });
     });
   }
   
@@ -125,7 +131,7 @@ const shoppingList = (function(){
           render();
         })
         .catch( (e) => {
-          store.setError(e.responseJSON.message);
+          store.setError(e);
           console.log(e);
           render();
         });
@@ -139,10 +145,15 @@ const shoppingList = (function(){
       event.preventDefault();
       const id = getItemIdFromElement(event.currentTarget);
       const itemName = $(event.currentTarget).find('.shopping-item').val();
-      api.updateItem(id, { name: itemName }, () => {
-        store.findAndUpdate(id, { name: itemName });
-        render();
-      });
+      api.updateItem(id, { name: itemName })
+        .then(() => {
+          store.findAndUpdate(id, { name: itemName });
+          render();
+        })
+        .catch((err) => {
+          store.setError(err);
+          render();
+        });
     });
   }
   
