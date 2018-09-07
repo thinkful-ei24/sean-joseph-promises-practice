@@ -2,39 +2,35 @@
 /* global $ */
 
 const api = (function(){
-  const BASE_URL = 'https://thinkful-list-api.herokuapp.com/richie';
+  const BASE_URL = 'https://thinkful-list-api.herokuapp.com/sean-joseph';
 
-  const getItems = function(callback) {
-    $.getJSON(BASE_URL + '/items', callback);
+  const getItems = function() {
+    return $.getJSON(BASE_URL + '/items');
   };
 
-  const createItem = function(name, onSuccess, onError) {
+  const createItem = function(name) {
     const newItem = JSON.stringify({ name });
-    $.ajax({
+    return $.ajax({
       url: BASE_URL + '/items',
       method: 'POST',
       contentType: 'application/json',
       data: newItem
-    })
-      .then(onSuccess)
-      .catch(onError);
+    });
   };
 
-  const updateItem = function(id, updateData, callback) {
-    $.ajax({
+  const updateItem = function(id, updateData) {
+    return $.ajax({
       url: BASE_URL + '/items/' + id,
       method: 'PATCH',
       contentType: 'application/json',
       data: JSON.stringify(updateData),
-    })
-      .then(callback);
+    });
   };
 
-  const deleteItem = function(id, callback) {
-    $.ajax({
+  const deleteItem = function(id) {
+    return $.ajax({
       url: BASE_URL + '/items/' + id,
       method: 'DELETE',
-      success: callback
     });
   };
 
