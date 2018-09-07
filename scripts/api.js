@@ -1,3 +1,6 @@
+
+/* global $ */
+
 const api = (function(){
   const BASE_URL = 'https://thinkful-list-api.herokuapp.com/richie';
 
@@ -11,10 +14,10 @@ const api = (function(){
       url: BASE_URL + '/items',
       method: 'POST',
       contentType: 'application/json',
-      data: newItem,
-      success: onSuccess,
-      error: onError,
-    });
+      data: newItem
+    })
+      .then(onSuccess)
+      .catch(onError);
   };
 
   const updateItem = function(id, updateData, callback) {
@@ -23,8 +26,8 @@ const api = (function(){
       method: 'PATCH',
       contentType: 'application/json',
       data: JSON.stringify(updateData),
-      success: callback
-    });
+    })
+      .then(callback);
   };
 
   const deleteItem = function(id, callback) {
